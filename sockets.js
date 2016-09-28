@@ -34,6 +34,8 @@ module.exports = function (server, config) {
 
         client.on('join', join);
 
+        client.on('check', check);
+
         function removeFeed(type) {
             if (client.room) {
                 io.sockets.in(client.room).emit('remove', {
