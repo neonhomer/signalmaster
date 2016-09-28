@@ -63,6 +63,12 @@ module.exports = function (server, config) {
             client.room = name;
         }
 
+        function check(name, callback) {
+            if (typeof name !== 'string') return;
+
+            safeCb(callback)(null, clientsInRoom(name));
+        }
+
         // we don't want to pass "leave" directly because the
         // event type string of "socket end" gets passed too.
         client.on('disconnect', function () {
@@ -137,7 +143,7 @@ module.exports = function (server, config) {
     }
 
     function clientsInRoom(name) {
-        return io.sockets.clients(name).length;
+        return Object.keys(io.nsps['/'].adapter.rooms[name] || {}).length; // Updated for sockets 1.x
     }
 
 };
